@@ -36,9 +36,24 @@ The system uses a script called `start_services.zsh` to initialize all necessary
 
 This script will:
 - Check for all dependencies
+- **Prompt for API keys configuration** (OpenAI and Google API keys)
 - Start the Ollama service (port 11434)
 - Start the ScienceBeam service (port 8080)
 - Start the Streamlit application (port 8501)
+
+### API Key Configuration
+
+When you run the script for the first time, it will check for existing API keys and prompt you to enter them if none are found:
+
+1. When prompted `"No API configuration found. Would you like to configure API keys now? (y/n)"`, enter `y` to configure API keys
+2. Enter your OpenAI API key when prompted (or leave empty to skip)
+3. Enter your Google API key when prompted (or leave empty to skip)
+
+The keys will be stored securely in a `.api_keys` file in your project directory and automatically loaded on subsequent script runs.
+
+To update your API keys later, you can either:
+- Edit the `.api_keys` file directly
+- Delete the `.api_keys` file and restart the services to be prompted again
 
 ### Accessing the Interface
 
@@ -150,6 +165,14 @@ The RAG system can be customized for specific needs:
 
 ## Troubleshooting
 
+### API Key Issues
+
+If you encounter issues with API keys:
+1. Check if the `.api_keys` file exists in your project directory
+2. Verify the API keys are correctly formatted in the file
+3. Ensure the API keys are valid and have not expired
+4. Delete the `.api_keys` file and restart the services to reconfigure keys
+
 ### Service Startup Issues
 
 If services fail to start:
@@ -179,5 +202,5 @@ To stop all services, press `Ctrl+C` in the terminal where `start_services.zsh` 
 
 ## Technical Information
 
-- System last updated: April 20, 2025
+- System last updated: April 28, 2025
 - For support, please contact the system administrator
