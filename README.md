@@ -1,166 +1,183 @@
-# 科学论文评审系统使用指南
+# Scientific Paper Review System User Guide
 
-## 系统简介
+## Introduction
 
-科学论文评审系统是一个集成了多种AI模型的工具，用于自动化科学论文评审过程。该系统支持PDF论文上传、生成AI评审报告、计算论文评分、提供基于检索增强生成(RAG)的论文内容搜索与问答，以及创新性评估与人机协作功能。
+This Scientific Paper Review System is an AI-powered tool designed to automate and enhance the scientific paper review process. The system integrates multiple AI models to analyze academic papers, generate comprehensive reviews, calculate paper scores, and provide intelligent search and question-answering capabilities through Retrieval-Augmented Generation (RAG).
 
-## 系统要求与前置条件
+## System Requirements
 
-在使用本系统前，请确保以下服务已正确配置并启动：
+Before using the system, ensure the following prerequisites are met:
 
-1. **Ollama服务**：用于本地运行开源大语言模型
-2. **ScienceBeam服务**：用于PDF解析与转换为XML格式
-3. **环境变量**：OpenAI API密钥（如使用GPT模型）、Google API密钥（如使用Gemini模型）
+### Required Services
+1. **Ollama**: Local service for running open-source large language models
+2. **ScienceBeam**: Service for parsing PDF papers and converting them to XML format
+3. **Streamlit**: Web application framework for the user interface
 
-## 启动系统
+### Required Environments
+1. **Conda environments**:
+   - `ScienceBeam`: Environment for the ScienceBeam service
+   - `llm`: Environment for the Streamlit application
 
-本系统使用脚本`start_services.zsh`来启动所有必需的服务。打开终端并执行：
+### API Keys (if applicable)
+- OpenAI API key (for GPT models)
+- Google API key (for Gemini models)
 
-```bash
-./start_services.zsh
-```
+## Getting Started
 
-该脚本将依次启动：
-- Ollama服务（端口11434）
-- ScienceBeam服务（端口8080）
-- Streamlit应用（端口8501）
+### Starting the System
 
-脚本会检查所需的依赖项、环境和模型是否可用，并在后台启动相应服务。
+The system uses a script called `start_services.zsh` to initialize all necessary services:
 
-## 使用指南
+1. Open a terminal in the project directory
+2. Run the start script:
+   ```bash
+   ./start_services.zsh
+   ```
 
-### 访问应用界面
+This script will:
+- Check for all dependencies
+- Start the Ollama service (port 11434)
+- Start the ScienceBeam service (port 8080)
+- Start the Streamlit application (port 8501)
 
-系统启动成功后，在浏览器中访问以下地址：
+### Accessing the Interface
+
+Once all services are running, access the system through your web browser:
 ```
 http://localhost:8501
 ```
 
-### 界面布局
+## Using the System
 
-系统界面分为以下几个部分：
+### Interface Overview
 
-1. **侧边栏**：模型选择与配置
-2. **主界面**：文件上传与处理
-3. **标签页**：处理结果展示（论文摘要、AI评审、评分结果、搜索问答、创新评估）
+The interface is organized into the following sections:
 
-### 操作步骤
+1. **Sidebar**: Model selection and configuration
+2. **Main Panel**: File upload and processing
+3. **Result Tabs**: Different views of the processed paper
 
-#### 1. 选择模型
+### Step-by-Step Guide
 
-在侧边栏中，您可以选择使用的模型类型：
-- **GPT-4**：使用OpenAI的GPT-4模型（需要API密钥）
-- **Ollama**：使用本地部署的Ollama模型（默认为llama3.1:latest）
-- **Gemini**：使用Google的Gemini模型（需要API密钥）
+#### 1. Select AI Model
 
-#### 2. 上传论文
+In the sidebar, choose from the available models:
+- **GPT-4**: OpenAI's GPT-4 model (requires API key)
+- **Ollama**: Local Ollama model (default: llama3.1:latest)
+- **Gemini**: Google's Gemini model (requires API key)
 
-1. 在主界面中，使用"Upload a scientific paper (PDF)"上传按钮选择PDF文件
-2. 点击"Process Paper"按钮开始处理
+#### 2. Upload a Paper
 
-处理过程包括：
-- PDF转换为XML（通过ScienceBeam服务）
-- 解析XML提取论文结构和内容
-- 生成AI评审报告
-- 创建RAG索引用于搜索和问答
-- 评分计算（使用Qwen2.5模型）
+1. Use the "Upload a scientific paper (PDF)" button to select your PDF file
+2. Click "Process Paper" to start analysis
 
-#### 3. 查看评审结果
+Processing includes:
+- PDF to XML conversion (via ScienceBeam)
+- Content extraction and structure analysis
+- AI review generation
+- RAG index creation
+- Score calculation (using Qwen2.5 model)
 
-处理完成后，系统会显示包含5个标签页的界面：
+#### 3. Review Results
 
-##### 标签页1：论文摘要（Paper Summary）
-- 显示论文的基本信息和摘要
+After processing completes, review the results across five tabs:
 
-##### 标签页2：AI评审报告（AI-Generated Review）
-- 显示AI生成的详细评审报告，包括：
-  - 显著性与创新点
-  - 接受的潜在理由
-  - 拒绝的潜在理由
-  - 改进建议
-  - 重要公式
+##### Tab 1: Paper Summary
+- Basic paper information
+- Abstract and key points
 
-##### 标签页3：评分结果（Score Result）
-- 显示基于Qwen2.5模型的论文评分（1-10分）
-- 评分是根据接受理由和拒绝理由综合计算的
+##### Tab 2: AI-Generated Review
+- Significance and novelty
+- Potential reasons for acceptance
+- Potential reasons for rejection
+- Suggestions for improvement
+- Key formulas and equations
 
-##### 标签页4：RAG搜索与问答（RAG Search & Q&A）
-- **搜索功能**：在论文内容中搜索关键词或短语
-  - 输入搜索查询
-  - 设置返回结果数量
-  - 点击"Search"按钮执行搜索
+##### Tab 3: Score Result
+- Paper score (1-10 scale)
+- Based on Qwen2.5 model evaluation
+- Calculated from acceptance and rejection factors
 
-- **问答功能**：针对论文内容提问
-  - 输入问题
-  - 点击"Get Answer"获取基于论文内容的回答
+##### Tab 4: RAG Search & Q&A
+- **Search Function**: Search within the paper's content
+  - Enter keywords or phrases
+  - Set number of results to return
+  - View matching passages with context
 
-##### 标签页5：创新评估（Innovation Assessment）
-- 点击"Generate AI Innovation Assessment"生成创新性评估
-- 查看各维度评分（技术创新性、概念原创性、潜在影响等）
-- 提供人类专家反馈，调整AI评分
-- 保存反馈以便系统学习和改进
+- **Q&A Function**: Ask questions about the paper
+  - Enter your question
+  - Receive answers based on paper content
+  - View source passages for verification
 
-## 模型说明
+##### Tab 5: Innovation Assessment
+- Innovation scores across multiple dimensions
+- Technical novelty evaluation
+- Potential impact assessment
+- Human expert feedback options
+- Rating adjustment capabilities
 
-系统支持多种模型：
+## Advanced Features
 
-1. **评审生成模型**：
-   - GPT-4（OpenAI）
-   - Llama3.1（Ollama本地部署）
-   - Gemini（Google）
+### Model Information
 
-2. **评分模型**：
-   - Qwen2.5（阿里巴巴，通过Ollama本地部署）
+The system utilizes multiple AI models:
 
-3. **其他辅助模型**：
-   - OpenAI Embeddings（用于RAG向量化）
+1. **Review Generation Models**:
+   - GPT-4 (OpenAI)
+   - Llama3.1 (Ollama local deployment)
+   - Gemini (Google)
 
-## 常见问题处理
+2. **Scoring Model**:
+   - Qwen2.5 (Alibaba, deployed via Ollama)
 
-### 服务启动失败
+3. **Supporting Models**:
+   - OpenAI Embeddings (for RAG vectorization)
 
-如果遇到服务启动失败的情况：
-1. 检查日志文件（位于logs目录）
-2. 确认Ollama已正确安装并能运行
-3. 确认ScienceBeam环境已正确配置
-4. 检查相关端口是否被占用（8080、8501、11434）
+### Human-AI Collaboration
 
-### 模型未找到
+The innovation assessment tab supports human-AI collaboration:
+- AI generates initial assessments
+- Human experts can adjust scores
+- Feedback is recorded for model improvement
+- Learning samples can be exported for model fine-tuning
 
-如果Ollama模型未找到：
+### Customizing RAG Settings
+
+The RAG system can be customized for specific needs:
+- Text chunking parameters (chunk size, overlap)
+- Vector retrieval parameters (number of results)
+- Q&A generation parameters (temperature, context amount)
+
+## Troubleshooting
+
+### Service Startup Issues
+
+If services fail to start:
+1. Check log files in the `logs` directory
+2. Ensure Ollama is properly installed and running
+3. Verify ScienceBeam environment is correctly configured
+4. Check if ports are already in use (8080, 8501, 11434)
+
+### Model Not Found
+
+If Ollama models are not found:
 ```bash
 ollama pull llama3.1:latest
 ollama pull qwen2.5:latest
 ```
 
-### PDF处理失败
+### PDF Processing Errors
 
-如果PDF处理失败：
-1. 确认ScienceBeam服务正在运行
-2. 检查PDF是否符合要求（学术论文格式）
-3. 检查PDF是否有加密保护
+If PDF processing fails:
+1. Ensure ScienceBeam service is running
+2. Check if the PDF meets requirements (academic paper format)
+3. Verify the PDF isn't password protected
 
-## 关闭系统
+## Shutting Down
 
-要关闭系统，只需在运行start_services.zsh的终端中按`Ctrl+C`，脚本会自动清理并停止所有服务。
+To stop all services, press `Ctrl+C` in the terminal where `start_services.zsh` is running. The script will automatically clean up and stop all services.
 
-## 高级功能
+## Technical Information
 
-### 创新评估与人机协作
-
-创新评估功能设计用于结合AI分析和人类专家判断：
-1. AI生成初步创新评估
-2. 人类专家可以调整评分并提供理由
-3. 反馈会被记录用于模型改进
-4. 学习样本可导出用于模型微调
-
-### RAG系统自定义
-
-RAG系统可以根据需要进行调整：
-1. 修改文本分割参数（块大小、重叠度）
-2. 调整向量检索参数（返回结果数量）
-3. 调整问答生成参数（温度、上下文数量）
-
-## 开发者信息
-
-本系统最后更新于2025年4月20日。如有问题或建议，请联系系统管理员。
+- System last updated: April 20, 2025
+- For support, please contact the system administrator
